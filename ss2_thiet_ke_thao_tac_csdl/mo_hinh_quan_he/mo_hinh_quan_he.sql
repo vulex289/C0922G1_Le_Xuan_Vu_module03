@@ -35,17 +35,18 @@ foreign key(so_pn) references phieu_nhap(so_pn),
 foreign key(ma_vat_tu) references vat_tu(ma_vat_tu)
 );
 
-create table don_dh(
-so_dh int primary key,
-ngay_dh date);
-
-
 create table nha_cc(
 ma_ncc varchar(50)  primary key,
 ten_ncc varchar(50),
 dia_chi varchar(50),
 so_dien_thoai int
 );
+
+create table don_dh(
+so_dh int primary key,
+ngay_dh date,
+ma_vat_tu varchar(20),
+foreign key(ma_vat_tu) references nha_cc(ma_ncc));
 
 create table so_dien_thoai(
 ma_so_dien_thoai int auto_increment primary key,
