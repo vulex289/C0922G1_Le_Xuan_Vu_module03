@@ -28,13 +28,13 @@ select
   dv.ten_dich_vu, 
   hd.ten_dat_coc, 
   hd.ngay_lam_hop_dong, 
-  sum(hdct.so_luong) as tong_so_luong_dvdk 
+  ifnull((hdct.so_luong),0) as tong_so_luong_dvdk 
 from 
-  nhan_vien nv 
-  join hop_dong hd on nv.ma_nhan_vien = hd.ma_nhan_vien 
-  join khach_hang kh on kh.ma_khach_hang = hd.ma_khach_hang 
-  join dich_vu dv on dv.ma_dich_vu = hd.ma_dich_vu 
-  join hop_dong_chi_tiet hdct on hdct.ma_hop_dong = hd.ma_hop_dong 
+  hop_dong hd 
+  left join nhan_vien nv on nv.ma_nhan_vien = hd.ma_nhan_vien 
+  left join khach_hang kh on kh.ma_khach_hang = hd.ma_khach_hang 
+  left join dich_vu dv on dv.ma_dich_vu = hd.ma_dich_vu 
+  left join hop_dong_chi_tiet hdct on hdct.ma_hop_dong = hd.ma_hop_dong 
 where 
   hd.ten_dat_coc not in(
     select 
@@ -57,10 +57,8 @@ SET
   sql_mode =(
     SELECT 
       REPLACE(
-        @@sql_mode, 'ONLY_FULL_GROUP_BY', 
-        ''
-      )
-  );
+        @@sql_mode,'ONLY_FULL_GROUP_BY', 
+        ''));
 -- Mở chế độ của mySQL như cũ
 SET 
   sql_mode =(
