@@ -1,0 +1,23 @@
+#id10{
+    border: 10px;
+    border-bottom: solid blue;
+    border-top:solid greenyellow;
+    border-left:solid darkviolet;
+    border-right:solid cornflowerblue;
+    height: 100%;
+}
+.id15{
+    border: 2px dashed firebrick;
+    padding: 20px;
+    margin: 20px;
+}
+.id20{
+    border: 2px dashed firebrick;
+    margin-bottom: 40px;
+    margin: 20px;
+}
+.id25{
+    border: 2px dashed firebrick;
+    margin-bottom: 60px;
+
+}
