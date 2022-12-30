@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" type="text/css" href="bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css">
-    <script src="bootstrap-5.3.0-alpha1-dist/bootstrap-5.3.0-alpha1-dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="bootstrap-5.3.0-alpha1-dist/bootstrap-5.3.0-alpha1-dist/css/bootstrap.css">
-    <script src="bootstrap-5.3.0-alpha1-dist/bootstrap-5.3.0-alpha1-dist/js/bootstrap.bundle.js"></script>
+    <script src="bootstrap-5.3.0-alpha1-dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" type="text/css" href="bootstrap-5.3.0-alpha1-dist/css/bootstrap.css">
+    <script src="bootstrap-5.3.0-alpha1-dist/js/bootstrap.bundle.js"></script>
     <style>
         .id1 {
             color: wheat;
@@ -22,7 +22,7 @@
 </head>
 <body>
 <div class="row container-fluid">
-    <img src="https://furamavietnam.com/wp-content/uploads/2019/02/Ariyana-Tourism-Complex-02-2.png">
+    <img src="https://furamavietnam.com/wp-content/uploads/2019/02/Ariyana-Tourism-Complex-02-2.png" alt="">
     <p class="id2 text-lg-end my-5"><span class="badge bg-success">Lê Xuân Vũ</span></p>
 
 </div>
@@ -147,7 +147,7 @@
                         aria-label="Slide 2"></button>
 
             </div>
-            <div class="carousel-inner">
+            <div class="carousel-inner my-5">
                 <div class="carousel-item active">
                     <div class="row m-3">
                         <div class="card">
@@ -214,15 +214,22 @@
         </div>
     </div>
 </div>
-</div>
-</div>
 <div class="row text-center container-fluid bg-primary">
-    <p class="id1">FURAMA - FURAMA HOTELS INTERNATIONAL.</p>
+    <p class="id1">FURAMA - FURAMA HOTELS INTERNATIONAL.
+    </p>
+    <p class="id1" style="color: #2b3035">OUR HOTELS | PROMOTIONS | MEETINGS & OCCASIONS | BRAND STORY | CORPORATE INFO
+        | MEDIA CENTRE | LOYALTY</p>
     <p class="id1">1997</p>
 </div>
 </body>
+<%--<script src="bootstrap-5.3.0-alpha1-dist/js/bootstrap.min.js"--%>
+<%--        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"--%>
+<%--        crossorigin="anonymous"></script>--%>
+<%--<script src="bootstrap-5.3.0-alpha1-dist/bootstrap-5.3.0-alpha1-dist/js/bootstrap.min.js"></script>--%>
+<%--<script src="bootstrap-5.3.0-alpha1-dist/bootstrap-5.3.0-alpha1-dist/js/bootstrap.bundle.js"></script>--%>
+<%--<script src="../bootstrap-5.3.0-alpha1-dist/js/bootstrap.js"></script>--%>
+
 <script src="bootstrap-5.3.0-alpha1-dist/js/bootstrap.min.js"
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
         crossorigin="anonymous"></script>
-
 </html>
