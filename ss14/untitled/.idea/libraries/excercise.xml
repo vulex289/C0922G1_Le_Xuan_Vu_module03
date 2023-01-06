@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="excercise">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../ss14_Dependency Management &amp; Packaging/library/excercise.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
