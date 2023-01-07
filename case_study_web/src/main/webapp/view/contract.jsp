@@ -10,11 +10,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Customer</title>
+    <title>Contract</title>
 
-    <script src="bootstrap-5.3.0-alpha1-dist/js/bootstrap.bundle.js"></script>
-    <link rel="stylesheet" href="bootstrap-5.3.0-alpha1-dist/css/bootstrap.css">
-    <link rel="stylesheet" href="bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css">
+    <script src="../bootstrap-5.3.0-alpha1-dist/js/bootstrap.bundle.js"></script>
+    <link rel="stylesheet" href="../bootstrap-5.3.0-alpha1-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css">
 </head>
 <body class=" vh-100">
 <div class="row container-fluid">

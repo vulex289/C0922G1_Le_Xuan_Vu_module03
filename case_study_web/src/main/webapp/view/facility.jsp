@@ -11,10 +11,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Facility</title>
-    <link rel="stylesheet" type="text/css" href="bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css">
-    <script src="bootstrap-5.3.0-alpha1-dist/js/bootstrap.js"></script>
-    <link rel="stylesheet" type="text/css" href="bootstrap-5.3.0-alpha1-dist/css/bootstrap.css">
-    <script src="bootstrap-5.3.0-alpha1-dist/js/bootstrap.bundle.js"></script>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css">
+    <script src="../bootstrap-5.3.0-alpha1-dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-5.3.0-alpha1-dist/css/bootstrap.css">
+    <script src="../bootstrap-5.3.0-alpha1-dist/js/bootstrap.bundle.js"></script>
 </head>
 <body class=" vh-100">
 <div class="row container-fluid">

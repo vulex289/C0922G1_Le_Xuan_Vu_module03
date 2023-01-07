@@ -45,7 +45,7 @@
                             Employee
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/Employee.jsp">Action</a></li>
+                            <li><a class="dropdown-item" href="/view/Employee.jsp">Action</a></li>
                             <li><a class="dropdown-item" href="#">Another action</a></li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -59,7 +59,7 @@
                             Customer
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/customer.jsp">Action</a></li>
+                            <li><a class="dropdown-item" href="/customer">Action</a></li>
                             <li><a class="dropdown-item" href="#">Another action</a></li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -73,7 +73,7 @@
                             Service
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/facility.jsp">Action</a></li>
+                            <li><a class="dropdown-item" href="/view/facility.jsp">Action</a></li>
                             <li><a class="dropdown-item" href="#">Another action</a></li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -87,7 +87,7 @@
                             Contract
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/contract.jsp">Action</a></li>
+                            <li><a class="dropdown-item" href="/view/contract.jsp">Action</a></li>
                             <li><a class="dropdown-item" href="#">Another action</a></li>
                             <li>
                                 <hr class="dropdown-divider">
