@@ -68,6 +68,11 @@ public class CustomerServlet extends HttpServlet {
     private void showList(HttpServletRequest request, HttpServletResponse response) {
         List<Customer> customerList = customerService.findAll();
         List<CustomerType> customerTypeList = customerTypeService.findAll();
+        for (Customer customer:customerList) {
+            String []arrDateOfBirth=customer.getDateOfBirth().split("-");
+            String date=arrDateOfBirth[2]+"-"+arrDateOfBirth[1]+"-"+arrDateOfBirth[0];
+            customer.setDateOfBirth(date);
+        }
         request.setAttribute("customerList", customerList);
         request.setAttribute("customerTypeList", customerTypeList);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("view/customer/customer.jsp");

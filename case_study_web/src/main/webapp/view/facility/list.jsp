@@ -58,8 +58,8 @@
                             Customer
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/customer">List Customer</a></li>
-                            <li><a class="dropdown-item" href="/customer?action=create">Create Customer</a></li>
+                            <li><a class="dropdown-item" href="/facility">List Customer</a></li>
+                            <li><a class="dropdown-item" href="/facility?action=create">Create Customer</a></li>
 
                         </ul>
                     </li>
@@ -94,10 +94,15 @@
                 </ul>
                 <form class="d-flex mx-3" role="search" method="get">
                     <input class="form-control me-2" type="search" name="name" placeholder="Search" aria-label="Search">
-                    <label class="form-label">Loại khách hàng</label>
-                    <select class="form-select" aria-label="Default select example" name="customerType">
-                        <c:forEach var="customerType" items="${customerTypeList}">
-                            <option value="${customerType.getCustomerTypeId()}">${customerType.getCustomerTypeName()}</option>
+                    <label class="form-label">Loại dịch vụ</label>
+                    <select class="form-select" aria-label="Default select example" name="facilityTypeId1">
+                        <c:forEach var="facilityType" items="${facilityTypeList}">
+                            <option value="${facilityType.getFacilityTypeId()}">${facilityType.getFacilityTypeName()}</option>
+                        </c:forEach>
+                    </select>
+                    <select class="form-select" aria-label="Default select example" name="rentTypeId1">
+                        <c:forEach var="rentType" items="${rentTypeList}">
+                            <option value="${rentType.getRentTypeId()}">${rentType.getRentTypeName()}</option>
                         </c:forEach>
                     </select>
                     <button class="btn btn-outline-success" type="submit" name="action" value="search">Search</button>
@@ -106,52 +111,69 @@
         </div>
     </nav>
 </div>
-<h1 class="text-center my-3">LIST CUSTOMER </h1>
-<a href="/customer?action=create">
-    <button class="btn btn-primary">ADD NEW CUSTOMER</button>
+<h1 class="text-center my-3">LIST FACILITY </h1>
+<a href="/facility?action=create">
+    <button class="btn btn-primary">ADD NEW FACILITY</button>
 </a>
-<table class="table table-striped table-bordered text-center" style="width:100%" id="tableCustomer">
+<table class="table table-striped table-bordered text-center" style="width:100%" id="tableFacility">
     <thead>
     <tr>
         <th scope="col">Number</th>
         <th scope="col">Name</th>
-        <th scope="col">Date Of Birth</th>
-        <th scope="col">Gender</th>
-        <th scope="col">Id-card</th>
-        <th scope="col">Phone-Number</th>
-        <th scope="col">Email</th>
-        <th scope="col">Address</th>
-        <th scope="col">CustomerType</th>
+        <th scope="col">Area(m2)</th>
+        <th scope="col">Cost</th>
+        <th scope="col">Max_People</th>
+        <th scope="col">Rent_Type</th>
+        <th scope="col">Facility_Type</th>
+        <th scope="col">Standard_Room</th>
+        <th scope="col">description_Other_Convenience</th>
+        <th scope="col">Pool_Area(m2)</th>
+        <th scope="col">FloorNumber</th>
+        <th scope="col">Facility_Free</th>
         <th scope="col">Edit</th>
         <th scope="col">Delete</th>
     </tr>
     </thead>
     <tbody class="table-group-divider">
-    <c:forEach var="customer" items="${customerList}" varStatus="status">
+    <c:forEach var="facility" items="${facilityList}" varStatus="status">
         <tr>
-            <td>${customer.getCustomerId()}</td>
-            <td>${customer.getCustomerName()}</td>
-            <td>${customer.getDateOfBirth()}</td>
-            <c:if test="${customer.getGender() == 1}">
-                <td>Nam</td>
-            </c:if>
-            <c:if test="${customer.getGender() == 0}">
-                <td>Nữ</td>
-            </c:if>
-            <td>${customer.getIdCard()}</td>
-            <td>${customer.getPhoneNumber()}</td>
-            <td>${customer.getEmail()}</td>
-            <td>${customer.getAddress()}</td>
-            <c:forEach var="customerType" items="${customerTypeList}">
+            <td>${facility.getFacilityId()}</td>
+            <td>${facility.getFacilityName()}</td>
+            <td>${facility.getArea()}</td>
+            <td>${facility.getCost()}</td>
+            <td>${facility.getMaxPeople()}</td>
+            <c:forEach var="rentType" items="${rentTypeList}">
 
-                <c:if test="${customerType.getCustomerTypeId() == customer.getCustomerTypeId()}">
+                <c:if test="${rentType.getRentTypeId() == facility.getRentTypeId()}">
                     <td>
-                            ${customerType.getCustomerTypeName()}
+                            ${rentType.getRentTypeName()}
                     </td>
                 </c:if>
             </c:forEach>
+            <c:forEach var="facilityType" items="${facilityTypeList}">
+
+                <c:if test="${facilityType.getFacilityTypeId() == facility.getFacilityTypeId()}">
+                    <td>
+                            ${facilityType.getFacilityTypeName()}
+                    </td>
+                </c:if>
+            </c:forEach>
+            <td>${facility.getStandardRoom()}</td>
+            <td>${facility.getDescriptionOtherConvenience()}</td>
+            <c:if test="${facility.getPoolArea()==null}"><td>0</td>
+            </c:if>
+            <c:if test="${facility.getPoolArea()!=null}"><td>${facility.getPoolArea()}</td>
+            </c:if>
+            <c:if test="${facility.getNumberOfFloors()==null}"><td>0</td>
+            </c:if>
+            <c:if test="${facility.getNumberOfFloors()!=null}"><td>${facility.getNumberOfFloors()}</td>
+            </c:if>
+            <c:if test="${facility.getFacilityFree()==null}"><td>-</td>
+            </c:if>
+            <c:if test="${facility.getFacilityFree()!=null}"><td>${facility.getFacilityFree()}</td>
+            </c:if>
             <td>
-                <a href="/customer?action=edit&id=${customer.getCustomerId()}">
+                <a href="/facility?action=edit&id=${facility.getFacilityId()}">
                     <button type="button" class="btn btn-primary">EDIT</button>
                 </a>
             </td>
@@ -159,7 +181,7 @@
                 <!-- Button trigger modal -->
 
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                        onclick="deleteCustomer('${customer.getCustomerId()}','${customer.getCustomerName()}')">
+                        onclick="deleteFacility('${facility.getFacilityId()}','${facility.getFacilityName()}')">
                     DELETE
                 </button>
             </td>
@@ -170,15 +192,15 @@
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form method="post" action="/customer?action=delete">
+        <form method="post" action="/facility?action=delete">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">DELETE CUSTOMER</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">DELETE FACILITY</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="text" name="idDelete" hidden id="idDelete">
-                    <strong>Customer: </strong>
+                    <strong>Facility: </strong>
                     <span id="nameDelete" class="text-danger"></span>
                 </div>
                 <div class="modal-footer">
@@ -191,14 +213,14 @@
 </div>
 
 <script>
-    function deleteCustomer(id, name) {
+    function deleteFacility(id, name) {
         document.getElementById("idDelete").value = id;
         document.getElementById("nameDelete").innerText = name;
     }
 </script>
 <script>
     $(document).ready(function () {
-        $('#tableCustomer').dataTable({
+        $('#tableFacility').dataTable({
             "dom": 'lrtip',
             "lengthChange": false,
             "pageLength": 5

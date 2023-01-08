@@ -45,7 +45,7 @@
         </div>
         <div class="mb-3">
             <label for="recipient-name" class="col-form-label">Ngày Sinh</label>
-            <input type="date"value="${customer.getdate()}" class="form-control" name="dayOfBirth">
+            <input type="date"value="${customer.getDateOfBirth()}" class="form-control" name="dayOfBirth">
         </div>
         <div class="mb-3">
             <label class="form-label" class="d-block me-4">Giới tính</label>
