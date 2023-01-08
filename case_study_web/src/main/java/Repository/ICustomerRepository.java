@@ -10,4 +10,5 @@ public interface ICustomerRepository {
     boolean createCustomer(Customer customer);
     boolean editCustomer(Customer customer);
     boolean deleteCustomer(int id);
+    List<Customer>searchByName(String name , int customerType);
 }

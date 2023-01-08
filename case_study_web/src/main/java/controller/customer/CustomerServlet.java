@@ -31,8 +31,10 @@ public class CustomerServlet extends HttpServlet {
                 showCreatForm(request, response);
                 break;
             case "edit":
+                showEditForm(request, response);
                 break;
-            case "delete":
+            case "search":
+                searchByName(request,response);
                 break;
             default:
                 showList(request, response);
@@ -52,8 +54,10 @@ public class CustomerServlet extends HttpServlet {
                 createCustomer(request, response);
                 break;
             case "edit":
+                editCustomer(request, response);
                 break;
             case "delete":
+                deleteCustomer(request, response);
                 break;
             default:
                 break;
@@ -90,7 +94,7 @@ public class CustomerServlet extends HttpServlet {
     }
 
     private void createCustomer(HttpServletRequest request, HttpServletResponse response) {
-        String message="Thêm Mới thành công";
+        String message = "Thêm Mới thành công";
         String customerName = request.getParameter("customerName");
         String dayOfBirth = request.getParameter("dayOfBirth");
         int gender = Integer.parseInt(request.getParameter("gender"));
@@ -99,12 +103,12 @@ public class CustomerServlet extends HttpServlet {
         String email = request.getParameter("email");
         String address = request.getParameter("address");
         int customerTypeId = Integer.parseInt(request.getParameter("customerTypeId"));
-        Customer customer = new Customer( customerName, dayOfBirth, gender, idCard, phoneNumber, email, address, customerTypeId);
+        Customer customer = new Customer(customerName, dayOfBirth, gender, idCard, phoneNumber, email, address, customerTypeId);
         boolean check = customerService.createCustomer(customer);
-        if (!check){
+        if (!check) {
             message = "Không thành công";
         }
-        request.setAttribute("message",message);
+        request.setAttribute("message", message);
         RequestDispatcher requestDispatcher;
         requestDispatcher = request.getRequestDispatcher("view/customer/create.jsp");
         try {
@@ -115,4 +119,73 @@ public class CustomerServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
+
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        List<CustomerType> customerTypeList = customerTypeService.findAll();
+        Customer customer = customerService.findById(id);
+        request.setAttribute("customer", customer);
+        request.setAttribute("customerTypeList", customerTypeList);
+        RequestDispatcher requestDispatcher;
+        requestDispatcher = request.getRequestDispatcher("view/customer/edit.jsp");
+        try {
+            requestDispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void editCustomer(HttpServletRequest request, HttpServletResponse response) {
+        String message = "Sửa thành công";
+        int customerId = Integer.parseInt(request.getParameter("id"));
+        String customerName = request.getParameter("customerName");
+        String dayOfBirth = request.getParameter("dayOfBirth");
+        int gender = Integer.parseInt(request.getParameter("gender"));
+        int idCard = Integer.parseInt(request.getParameter("idCard"));
+        String phoneNumber = request.getParameter("phoneNumber");
+        String email = request.getParameter("email");
+        String address = request.getParameter("address");
+        int customerTypeId = Integer.parseInt(request.getParameter("customerTypeId"));
+        Customer customer = new Customer(customerId, customerName, dayOfBirth, gender, idCard, phoneNumber, email, address, customerTypeId);
+        boolean check = customerService.editCustomer(customer);
+        if (!check) {
+            message = "Không thành công";
+        }
+        request.setAttribute("message", message);
+        RequestDispatcher requestDispatcher;
+        requestDispatcher = request.getRequestDispatcher("view/customer/edit.jsp");
+        try {
+            requestDispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteCustomer(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("idDelete"));
+        customerService.deleteCustomer(id);
+        showList(request, response);
+    }
+
+    private void searchByName(HttpServletRequest request, HttpServletResponse response) {
+        String name = request.getParameter("name");
+        int customerType = Integer.parseInt(request.getParameter("customerType"));
+    List<Customer> customerList = customerService.searchByName(name,customerType);
+    List<CustomerType> customerTypeList = customerTypeService.findAll();
+    RequestDispatcher requestDispatcher = request.getRequestDispatcher("view/customer/customer.jsp");
+    request.setAttribute("customerList",customerList);
+    request.setAttribute("customerTypeList",customerTypeList);
+        try {
+            requestDispatcher.forward(request,response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+           e.printStackTrace();
+        }
+    }
+
 }

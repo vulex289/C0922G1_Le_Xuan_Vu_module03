@@ -58,12 +58,9 @@
                             Customer
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <li><a class="dropdown-item" href="/customer">List Customer</a></li>
+                            <li><a class="dropdown-item" href="/customer?action=create">Create Customer</a></li>
+
                         </ul>
                     </li>
                     <li class="nav-item dropdown ms-5">
@@ -95,9 +92,15 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="d-flex mx-3" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                <form  class="d-flex mx-3" role="search" method="get">
+                    <input class="form-control me-2" type="search" name="name" placeholder="Search" aria-label="Search">
+                    <label class="form-label">Loại khách hàng</label>
+                    <select class="form-select" aria-label="Default select example" name="customerType">
+                        <c:forEach var="customerType" items="${customerTypeList}">
+                            <option value="${customerType.getCustomerTypeId()}">${customerType.getCustomerTypeName()}</option>
+                        </c:forEach>
+                    </select>
+                    <button class="btn btn-outline-success" type="submit" name="action" value="search">Search</button>
                 </form>
             </div>
         </div>
@@ -146,11 +149,13 @@
                 </c:if>
             </c:forEach>
             <td>
-                <button type="button" class="btn btn-primary">EDIT</button>
+                <a href="/customer?action=edit&id=${customer.getCustomerId()}"><button type="button" class="btn btn-primary">EDIT</button></a>
             </td>
             <td>
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+
+                    <button  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                             onclick="deleteCustomer('${customer.getCustomerId()}','${customer.getCustomerName()}')">
                     DELETE
                 </button>
             </td>
@@ -159,24 +164,34 @@
     </tbody>
 </table>
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
+        <form method="post" action="/customer?action=delete">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">DELETE CUSTOMER</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Are you sure, baby?
-            </div>
+                    <input type="text"  name="idDelete" id="idDelete">
+                <strong>Customer: </strong>
+                <span id="nameDelete" class="text-danger"></span>
+                </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCEL</button>
+                <button type="submit" class="btn btn-primary">OK</button>
             </div>
         </div>
+        </form>
     </div>
 </div>
+
+<script>
+    function deleteCustomer(id, name) {
+        document.getElementById("idDelete").value = id;
+        document.getElementById("nameDelete").innerText = name;
+    }
+</script>
 <script>
     $(document).ready(function() {
         $('#tableCustomer').dataTable( {
