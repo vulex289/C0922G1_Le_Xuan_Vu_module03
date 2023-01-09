@@ -15,6 +15,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @WebServlet(name = "Servlet", value = "/facility")
 public class FacilityServlet extends HttpServlet {
@@ -32,7 +33,6 @@ public class FacilityServlet extends HttpServlet {
         }
         switch (action) {
             case "create":
-                showFormCreate(request, response);
                 break;
             case "edit":
                 showEditFacility(request,response);
@@ -66,6 +66,7 @@ public class FacilityServlet extends HttpServlet {
                 deleteFacility(request,response);
                 break;
             default:
+                showList(request,response);
                 break;
 
         }
@@ -88,22 +89,7 @@ public class FacilityServlet extends HttpServlet {
         }
     }
 
-    private void showFormCreate(HttpServletRequest request, HttpServletResponse response) {
-        List<Facility> facilityList = facilityService.findAll();
-        List<FacilityType> facilityTypeList = facilityTypeService.findAll();
-        List<RentType> rentTypeList = rentTypeService.findAll();
-        request.setAttribute("facilityList", facilityList);
-        request.setAttribute("facilityTypeList", facilityTypeList);
-        request.setAttribute("rentTypeList", rentTypeList);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("view/facility/create.jsp");
-        try {
-            requestDispatcher.forward(request, response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     private void createFacility(HttpServletRequest request, HttpServletResponse response) {
         String message = "Thanh Công";
@@ -115,24 +101,24 @@ public class FacilityServlet extends HttpServlet {
         int facilityTypeId = Integer.parseInt(request.getParameter("facilityTypeId"));
         String standardRoom = request.getParameter("standardRoom");
         String descriptionOtherConvenience = request.getParameter("descriptionOtherConvenience");
-        double poolArea = Double.parseDouble(request.getParameter("poolArea"));
-        int numberOfFloors = Integer.parseInt(request.getParameter("numberOfFloors"));
+        String poolAreaString = request.getParameter("poolArea");
+        double poolArea;
+        if (Objects.equals(poolAreaString, "")){
+                    poolArea = 0;
+        }else {
+            poolArea = Double.parseDouble(poolAreaString);
+        }
+        String numberOfFloorString = request.getParameter("numberOfFloors");
+        int numberOfFloors;
+        if(Objects.equals(numberOfFloorString, "")){
+            numberOfFloors = 0;
+        }else {
+            numberOfFloors = Integer.parseInt(numberOfFloorString);
+        }
         String facilityFree = request.getParameter("facilityFree");
         Facility facility = new Facility(facilityName, area, cost, maxPeople, rentTypeId, facilityTypeId, standardRoom, descriptionOtherConvenience, poolArea, numberOfFloors, facilityFree);
-        boolean check = facilityService.insertFacility(facility);
-        if (!check) {
-            message = "Không thành công";
-        }
-        request.setAttribute("message", message);
-        RequestDispatcher requestDispatcher;
-        requestDispatcher = request.getRequestDispatcher("view/facility/create.jsp");
-        try {
-            requestDispatcher.forward(request, response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        facilityService.insertFacility(facility);
+      showList(request,response);
     }
     private void deleteFacility(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("idDelete"));

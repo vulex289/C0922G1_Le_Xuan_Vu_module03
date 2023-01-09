@@ -58,19 +58,19 @@
                             Customer
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/facility">List Customer</a></li>
-                            <li><a class="dropdown-item" href="/facility?action=create">Create Customer</a></li>
+                            <li><a class="dropdown-item" href="/customer">List Customer</a></li>
+                            <li><a class="dropdown-item" href="/customer?action=create">Create Customer</a></li>
 
                         </ul>
                     </li>
                     <li class="nav-item dropdown ms-5">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle" href="/facility" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
                             Service
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="/facility">List facility</a></li>
+                            <li><a class="dropdown-item" href="/facility?action=create">Create facility</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -112,9 +112,9 @@
     </nav>
 </div>
 <h1 class="text-center my-3">LIST FACILITY </h1>
-<a href="/facility?action=create">
-    <button class="btn btn-primary">ADD NEW FACILITY</button>
-</a>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addfacility"
+        data-bs-whatever="@mdo">ADD NEW FACILITY
+</button>
 <table class="table table-striped table-bordered text-center" style="width:100%" id="tableFacility">
     <thead>
     <tr>
@@ -164,7 +164,7 @@
             </c:if>
             <c:if test="${facility.getPoolArea()!=null}"><td>${facility.getPoolArea()}</td>
             </c:if>
-            <c:if test="${facility.getNumberOfFloors()==null}"><td>0</td>
+            <c:if test="${facility.getNumberOfFloors()==null}"><td>0</td>m
             </c:if>
             <c:if test="${facility.getNumberOfFloors()!=null}"><td>${facility.getNumberOfFloors()}</td>
             </c:if>
@@ -211,11 +211,126 @@
         </form>
     </div>
 </div>
-
+<%---------------------------------------------------------Modal add new facility-------------------------------%>
+<div class="modal fade" id="addfacility" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" >Thêm Mới Dịch Vụ</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="w-100 border border-2 border-success p-3  rounded" action="/facility?action=create" method="post">
+                    <input type="text" name="facilityTypeId" id="facilityTypeId" hidden>
+                    <button type="button" class="btn btn-warning" onclick='addVilla()'>+Add Villa
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="addHouse()">+Add House
+                    </button>
+                    <button type="button" class="btn btn-outline-danger" onclick="addRoom()">+Add Room
+                    </button>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Tên Dịch Vụ:</label>
+                        <input type="text" class="form-control" name="facilityName" id="recipient-name" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Diện tích</label>
+                        <input type="number" class="form-control" name="area">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Giá Tiền</label>
+                        <input type="number" class="form-control" name="cost">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Số lượng người tối đa</label>
+                        <input type="number" class="form-control" name="maxPeople">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Kiểu Thuê</label>
+                        <select class="form-select" aria-label="Default select example" name="rentTypeId">
+                            <c:forEach var="rentType" items="${rentTypeList}">
+                                <option value="${rentType.getRentTypeId()}">${rentType.getRentTypeName()}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="mb-3" id="standardRoom">
+                        <label for="recipient-name" class="col-form-label">Tiêu Chuẩn Phòng</label>
+                        <input type="text" class="form-control" name="standardRoom">
+                    </div>
+                    <div class="mb-3" id="descriptionOtherConvenience">
+                        <label for="recipient-name" class="col-form-label">Mô tả tiện nghi</label>
+                        <input type="text" class="form-control" name="descriptionOtherConvenience">
+                    </div>
+                    <div class="mb-3" id="poolArea">
+                        <label for="recipient-name" class="col-form-label">Diện tích hồ bơi</label>
+                        <input type="number" class="form-control" name="poolArea">
+                    </div>
+                    <div class="mb-3" id="numberOfFloors">
+                        <label for="recipient-name" class="col-form-label">Số tầng</label>
+                        <input type="number" class="form-control" name="numberOfFloors">
+                    </div>
+                    <div class="mb-3" id="facilityFree">
+                        <label for="recipient-name" class="col-form-label">Dich vụ miễn phí</label>
+                        <input type="text" class="form-control" name="facilityFree">
+                    </div>
+                    <div class="mb-3" >
+                        <label for="recipient-name" class="col-form-label">Save</label>
+                        <input type="submit" >
+                    </div>
+            </form>
+            </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy Bỏ</button>
+                <button type="button" class="btn btn-primary">Tạo Dịch Vụ</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     function deleteFacility(id, name) {
         document.getElementById("idDelete").value = id;
         document.getElementById("nameDelete").innerText = name;
+    }
+</script>
+<script>
+    function addVilla(){
+        document.getElementById("facilityTypeId").value = 1;
+        var standardRoom = document.getElementById('standardRoom');
+        var descriptionOtherConvenience = document.getElementById('descriptionOtherConvenience');
+        var poolArea = document.getElementById('poolArea');
+        var numberOfFloors = document.getElementById('numberOfFloors');
+        var facilityFree = document.getElementById('facilityFree');
+        standardRoom.style.display = 'block';
+        descriptionOtherConvenience.style.display = 'block';
+        poolArea.style.display = 'block';
+        numberOfFloors.style.display = 'block';
+        facilityFree.style.display = 'none';
+    }
+    function addRoom(){
+        document.getElementById("facilityTypeId").value = 3;
+        var standardRoom = document.getElementById('standardRoom');
+        var descriptionOtherConvenience = document.getElementById('descriptionOtherConvenience');
+        var poolArea = document.getElementById('poolArea');
+        var numberOfFloors = document.getElementById('numberOfFloors');
+        var facilityFree = document.getElementById('facilityFree');
+        standardRoom.style.display = 'none';
+        descriptionOtherConvenience.style.display = 'none';
+        poolArea.style.display = 'none';
+        numberOfFloors.style.display = 'none';
+        facilityFree.style.display = 'block';
+    }
+    function addHouse(){
+        document.getElementById("facilityTypeId").value = 2;
+        var standardRoom = document.getElementById('standardRoom');
+        var descriptionOtherConvenience = document.getElementById('descriptionOtherConvenience');
+        var poolArea = document.getElementById('poolArea');
+        var numberOfFloors = document.getElementById('numberOfFloors');
+        var facilityFree = document.getElementById('facilityFree');
+        standardRoom.style.display = 'block';
+        descriptionOtherConvenience.style.display = 'none';
+        poolArea.style.display = 'none';
+        numberOfFloors.style.display = 'block';
+        facilityFree.style.display = 'block';
     }
 </script>
 <script>

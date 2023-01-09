@@ -5,12 +5,15 @@ import Repository.ICustomerRepository;
 import Service.ICustomerService;
 import model.Customer;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CustomerService implements ICustomerService {
     ICustomerRepository customerRepository = new CustomerRepository();
     @Override
     public List<Customer> findAll() {
+        Map<String, String>maps= new HashMap<>();
         return customerRepository.findAll();
     }
 

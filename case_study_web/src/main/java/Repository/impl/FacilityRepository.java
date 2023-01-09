@@ -15,7 +15,7 @@ public class FacilityRepository implements IFacilityRepository {
     private static final String SELECT_ALL="select * from facility";
     private static final String DELETE_FACILITY="delete from facility where facility_id=?";
     private static final String FIND_FACILITY_BY_ID="select * from facility where facility_id=?";
-    private static final String UPDATE_FACILITY=" update facility set `name`=?,area=?,cost=?,max_people=?,rent_type_id=?,facility_type_id=?,standard_room=?,description_other_convenience=?,pool_area=?,number_of_floors=?,facility_free=?;";
+    private static final String UPDATE_FACILITY=" update facility set `name`=?,area=?,cost=?,max_people=?,rent_type_id=?,facility_type_id=?,standard_room=?,description_other_convenience=?,pool_area=?,number_of_floors=?,facility_free=? where facility_id=?;";
     private static final String SEARCH_FACILITY_BY="select * from facility f\n" +
             " join facility_type ft on f.facility_type_id = ft.facility_type_id\n" +
             " join rent_type r on f.rent_type_id = r.rent_type_id\n" +
@@ -135,6 +135,7 @@ public class FacilityRepository implements IFacilityRepository {
             preparedStatement.setDouble(9,facility.getPoolArea());
             preparedStatement.setInt(10,facility.getNumberOfFloors());
             preparedStatement.setString(11,facility.getFacilityFree());
+            preparedStatement.setInt(12,facility.getFacilityId());
             return preparedStatement.executeUpdate() >0;
         } catch (SQLException e) {
             e.printStackTrace();
