@@ -11,7 +11,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Customer</title>
+    <title>Facility</title>
 
     <link rel="stylesheet" href="../../bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../datatables/css/dataTables.bootstrap5.min.css">
@@ -19,6 +19,7 @@
     <script src="../../datatables/js/jquery.dataTables.min.js"></script>
     <script src="../../datatables/js/dataTables.bootstrap5.min.js"></script>
     <script src="../../bootstrap-5.3.0-alpha1-dist/js/bootstrap.bundle.js"></script>
+
 </head>
 <body class=" vh-100">
 <div class="row container-fluid">
@@ -94,15 +95,17 @@
                 </ul>
                 <form class="d-flex mx-3" role="search" method="get">
                     <input class="form-control me-2" type="search" name="name" placeholder="Search" aria-label="Search">
-                    <label class="form-label">Loại dịch vụ</label>
-                    <select class="form-select" aria-label="Default select example" name="facilityTypeId1">
+                    <%--                    <label class="form-label" style="color: #0c0c0c">Loại dịch vụ</label>--%>
+                    <select class="form-select" aria-label="Default select example" name="facilityType">
+                        <option value="">Chọn loại dịch vụ</option>
                         <c:forEach var="facilityType" items="${facilityTypeList}">
-                            <option value="${facilityType.getFacilityTypeId()}">${facilityType.getFacilityTypeName()}</option>
+                            <option value="${facilityType.getFacilityTypeName()}">${facilityType.getFacilityTypeName()}</option>
                         </c:forEach>
                     </select>
-                    <select class="form-select" aria-label="Default select example" name="rentTypeId1">
+                    <select class="form-select" aria-label="Default select example" name="rentType">
+                        <option value="">Chọn kiểu thuê</option>
                         <c:forEach var="rentType" items="${rentTypeList}">
-                            <option value="${rentType.getRentTypeId()}">${rentType.getRentTypeName()}</option>
+                            <option value="${rentType.getRentTypeName()}">${rentType.getRentTypeName()}</option>
                         </c:forEach>
                     </select>
                     <button class="btn btn-outline-success" type="submit" name="action" value="search">Search</button>
@@ -112,8 +115,7 @@
     </nav>
 </div>
 <h1 class="text-center my-3">LIST FACILITY </h1>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addfacility"
-        data-bs-whatever="@mdo">ADD NEW FACILITY
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addfacility">ADD NEW FACILITY
 </button>
 <table class="table table-striped table-bordered text-center" style="width:100%" id="tableFacility">
     <thead>
@@ -160,17 +162,23 @@
             </c:forEach>
             <td>${facility.getStandardRoom()}</td>
             <td>${facility.getDescriptionOtherConvenience()}</td>
-            <c:if test="${facility.getPoolArea()==null}"><td>0</td>
+            <c:if test="${facility.getPoolArea()==0}">
+                <td>0</td>
             </c:if>
-            <c:if test="${facility.getPoolArea()!=null}"><td>${facility.getPoolArea()}</td>
+            <c:if test="${facility.getPoolArea()!=0}">
+                <td>${facility.getPoolArea()}</td>
             </c:if>
-            <c:if test="${facility.getNumberOfFloors()==null}"><td>0</td>m
+            <c:if test="${facility.getNumberOfFloors()==0}">
+                <td>0</td>
             </c:if>
-            <c:if test="${facility.getNumberOfFloors()!=null}"><td>${facility.getNumberOfFloors()}</td>
+            <c:if test="${facility.getNumberOfFloors()!=0}">
+                <td>${facility.getNumberOfFloors()}</td>
             </c:if>
-            <c:if test="${facility.getFacilityFree()==null}"><td>-</td>
+            <c:if test="${facility.getFacilityFree()==null}">
+                <td>-</td>
             </c:if>
-            <c:if test="${facility.getFacilityFree()!=null}"><td>${facility.getFacilityFree()}</td>
+            <c:if test="${facility.getFacilityFree()!=null}">
+                <td>${facility.getFacilityFree()}</td>
             </c:if>
             <td>
                 <a href="/facility?action=edit&id=${facility.getFacilityId()}">
@@ -179,7 +187,6 @@
             </td>
             <td>
                 <!-- Button trigger modal -->
-
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal"
                         onclick="deleteFacility('${facility.getFacilityId()}','${facility.getFacilityName()}')">
                     DELETE
@@ -205,7 +212,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCEL</button>
-                    <button type="submit"  class="btn btn-primary">OK</button>
+                    <button type="submit" class="btn btn-primary">OK</button>
                 </div>
             </div>
         </form>
@@ -216,33 +223,40 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" >Thêm Mới Dịch Vụ</h1>
+                <h1 class="modal-title fs-5">Thêm Mới Dịch Vụ</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form class="w-100 border border-2 border-success p-3  rounded" action="/facility?action=create" method="post">
+                <form class="w-100 border border-2 border-success p-3  rounded" action="/facility?action=create"
+                      method="post">
                     <input type="text" name="facilityTypeId" id="facilityTypeId" hidden>
-                    <button type="button" class="btn btn-warning" onclick='addVilla()'>+Add Villa
+                    <button id="villa" type="button" class="btn btn-outline-warning" onclick='addVilla()'><p>+Add
+                        Villa</p>
                     </button>
-                    <button type="button" class="btn btn-danger" onclick="addHouse()">+Add House
+                    <button type="button" class="btn btn-primary" onclick="addHouse()"><p id="house">+Add House</p>
                     </button>
-                    <button type="button" class="btn btn-outline-danger" onclick="addRoom()">+Add Room
+                    <button type="button" class="btn btn-outline-danger" onclick="addRoom()"><p id="room">+Add Room</p>
                     </button>
                     <div class="mb-3">
                         <label for="recipient-name" class="col-form-label">Tên Dịch Vụ:</label>
-                        <input type="text" class="form-control" name="facilityName" id="recipient-name" >
+                        <input type="text" oninput="checkName(this.value)" class="form-control" name="facilityName"
+                               id="recipient-name">
+                        <span style="color: red" id="errorName"></span>
                     </div>
                     <div class="mb-3">
                         <label for="recipient-name" class="col-form-label">Diện tích</label>
-                        <input type="number" class="form-control" name="area">
+                        <input type="number" required oninput="checkArea(this.value,reg0)" class="form-control" name="area">
+                        <span style="color: red" id="errorArea"></span>
                     </div>
                     <div class="mb-3">
                         <label for="recipient-name" class="col-form-label">Giá Tiền</label>
-                        <input type="number" class="form-control" name="cost">
+                        <input type="number" required oninput="checkCost(this.value,reg0)" class="form-control" name="cost">
+                        <span style="color: red" id="errorCost"></span>
                     </div>
                     <div class="mb-3">
                         <label for="recipient-name" class="col-form-label">Số lượng người tối đa</label>
-                        <input type="number" class="form-control" name="maxPeople">
+                        <input type="number" required oninput="checkMaxPeople(this.value,reg0)" class="form-control" name="maxPeople">
+                        <span style="color: red" id="errorPeople"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Kiểu Thuê</label>
@@ -262,26 +276,25 @@
                     </div>
                     <div class="mb-3" id="poolArea">
                         <label for="recipient-name" class="col-form-label">Diện tích hồ bơi</label>
-                        <input type="number" class="form-control" name="poolArea">
+                        <input  type="number" class="form-control" required oninput="checkPoolArea(this.value,reg0)" name="poolArea">
+                        <span id="errorPool" style="color: red"></span>
                     </div>
                     <div class="mb-3" id="numberOfFloors">
                         <label for="recipient-name" class="col-form-label">Số tầng</label>
-                        <input type="number" class="form-control" name="numberOfFloors">
+                        <input oninput="checkFloor(this.value,reg0)" required type="number" class="form-control"
+                               name="numberOfFloors">
+                        <span id="errorFloor" style="color: red"></span>
                     </div>
                     <div class="mb-3" id="facilityFree">
                         <label for="recipient-name" class="col-form-label">Dich vụ miễn phí</label>
                         <input type="text" class="form-control" name="facilityFree">
                     </div>
-                    <div class="mb-3" >
-                        <label for="recipient-name" class="col-form-label">Save</label>
-                        <input type="submit" >
+                    <div class="mb-3 ">
+                        <input type="submit" id="btnSave"
+                               class=" form-control btn btn-info btn-outline-success btn-sm border border-2 border-success text-dark "
+                               value="SAVE">
                     </div>
-            </form>
-            </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy Bỏ</button>
-                <button type="button" class="btn btn-primary">Tạo Dịch Vụ</button>
+                </form>
             </div>
         </div>
     </div>
@@ -293,20 +306,25 @@
     }
 </script>
 <script>
-    function addVilla(){
+    function addVilla() {
         document.getElementById("facilityTypeId").value = 1;
         var standardRoom = document.getElementById('standardRoom');
         var descriptionOtherConvenience = document.getElementById('descriptionOtherConvenience');
         var poolArea = document.getElementById('poolArea');
         var numberOfFloors = document.getElementById('numberOfFloors');
         var facilityFree = document.getElementById('facilityFree');
+        var villa = document.getElementById('villa');
+        villa.style.backgroundColor = 'yellow';
         standardRoom.style.display = 'block';
         descriptionOtherConvenience.style.display = 'block';
         poolArea.style.display = 'block';
         numberOfFloors.style.display = 'block';
         facilityFree.style.display = 'none';
     }
-    function addRoom(){
+
+    function addRoom() {
+        var room = document.getElementById('room');
+        room.style.color = 'red';
         document.getElementById("facilityTypeId").value = 3;
         var standardRoom = document.getElementById('standardRoom');
         var descriptionOtherConvenience = document.getElementById('descriptionOtherConvenience');
@@ -319,8 +337,11 @@
         numberOfFloors.style.display = 'none';
         facilityFree.style.display = 'block';
     }
-    function addHouse(){
+
+    function addHouse() {
         document.getElementById("facilityTypeId").value = 2;
+        var house = document.getElementById('house');
+        house.style.color = 'green';
         var standardRoom = document.getElementById('standardRoom');
         var descriptionOtherConvenience = document.getElementById('descriptionOtherConvenience');
         var poolArea = document.getElementById('poolArea');
@@ -331,6 +352,77 @@
         poolArea.style.display = 'none';
         numberOfFloors.style.display = 'block';
         facilityFree.style.display = 'block';
+    }
+</script>
+<script>
+    let regName = /^[A-Z][a-z-0-9]{1,}$/;
+    let reg0 = /^[1-9]+$/;
+
+    function checkName(name) {
+        let regName = /^([A-Z][a-z-0-9]*)(\s\w*){1,}$/;
+        let checkedName = regName.exec(name);
+        if (!checkedName) {
+            document.getElementById("errorName").innerText = "Tên chưa đúng định dạng"
+            document.getElementById("btnSave").disabled = true;
+        } else {
+            document.getElementById("btnSave").disabled = false;
+            document.getElementById("errorName").innerText = ""
+        }
+    }
+
+    function checkFloor(name, regName) {
+        let checkedName = regName.exec(name);
+        if (!checkedName) {
+            document.getElementById("errorFloor").innerText = "Tầng chưa đúng định dạng"
+            document.getElementById("btnSave").disabled = true;
+        } else {
+            document.getElementById("btnSave").disabled = false;
+            document.getElementById("errorFloor").innerText = ""
+        }
+    }
+
+    function checkArea(name, regName) {
+        let checkedName = regName.exec(name);
+        if (!checkedName) {
+            document.getElementById("errorArea").innerText = "Diện tích chưa đúng định dạng"
+            document.getElementById("btnSave").disabled = true;
+        } else {
+            document.getElementById("btnSave").disabled = false;
+            document.getElementById("errorArea").innerText = ""
+        }
+    }
+
+        function checkMaxPeople(name, regName) {
+            let checkedName = regName.exec(name);
+            if (!checkedName) {
+                document.getElementById("errorPeople").innerText = "Số người chưa đúng định dạng"
+                document.getElementById("btnSave").disabled = true;
+            } else {
+                document.getElementById("btnSave").disabled = false;
+                document.getElementById("errorPeople").innerText = ""
+            }
+        }
+
+        function checkPoolArea(name, regName) {
+            let checkedName = regName.exec(name);
+            if (!checkedName) {
+                document.getElementById("errorPool").innerText = "Hồ Bơi lớn hơn 0"
+                document.getElementById("btnSave").disabled = true;
+            } else {
+                document.getElementById("btnSave").disabled = false;
+                document.getElementById("errorPool").innerText = ""
+            }
+        }
+
+        function checkCost(name, regName) {
+            let checkedName = regName.exec(name);
+            if (!checkedName) {
+                document.getElementById("errorCost").innerText = "Giá tiền chưa đúng định dạng"
+                document.getElementById("btnSave").disabled = true;
+            } else {
+                document.getElementById("btnSave").disabled = false;
+                document.getElementById("errorCost").innerText = ""
+            }
     }
 </script>
 <script>

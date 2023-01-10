@@ -4,7 +4,6 @@ import Repository.BaseRepository;
 import Repository.ICustomerRepository;
 import model.Customer;
 
-import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ public class CustomerRepository implements ICustomerRepository {
     private static final String FIND_ALL = "select * from customer";
     private static final String INSERT_CUSTOMER = "insert into customer(customer_name,date_of_birth,gender,id_card,phone_number,email,address,customer_type_id) values(?,?,?,?,?,?,?,?)";
     private static final String SELECT_CUSTOMER_BY_ID = "select * from customer where customer_id = ?";
-    private static final String SEARCH_CUSTOMER_BY_NAME = "select * from customer c join customer_type ct on c.customer_type_id = ct.customer_type_id where c.customer_name like ? and ct.customer_type_id = ?;";
+    private static final String SEARCH_CUSTOMER_BY_NAME = " select* from customer c join customer_type ct on c.customer_type_id = ct.customer_type_id where c.customer_name like ? and ct.customer_type_name like ?";
     private static final String DELETE_CUSTOMER_BY_ID = "delete from customer where customer_id = ?";
     private static final String UPDATE_CUSTOMER = "update customer set customer_name = ?,date_of_birth=?,gender=?,id_card = ?," +
             "phone_number=?,email=?,address=?,customer_type_id=? where customer_id = ?";
@@ -128,13 +127,13 @@ public class CustomerRepository implements ICustomerRepository {
     }
 
     @Override
-    public List<Customer> searchByName(String name,int customerType) {
+    public List<Customer> searchByName(String name, String customerType) {
         Connection connection = BaseRepository.getConnectDB();
         List<Customer> customers = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_CUSTOMER_BY_NAME);
             preparedStatement.setString(1,"%"+name+"%");
-            preparedStatement.setInt(2,customerType);
+            preparedStatement.setString(2,"%"+customerType+"%");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 int customerId = resultSet.getInt("customer_id");

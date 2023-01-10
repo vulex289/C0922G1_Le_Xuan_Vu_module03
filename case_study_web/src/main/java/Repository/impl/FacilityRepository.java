@@ -16,10 +16,9 @@ public class FacilityRepository implements IFacilityRepository {
     private static final String DELETE_FACILITY="delete from facility where facility_id=?";
     private static final String FIND_FACILITY_BY_ID="select * from facility where facility_id=?";
     private static final String UPDATE_FACILITY=" update facility set `name`=?,area=?,cost=?,max_people=?,rent_type_id=?,facility_type_id=?,standard_room=?,description_other_convenience=?,pool_area=?,number_of_floors=?,facility_free=? where facility_id=?;";
-    private static final String SEARCH_FACILITY_BY="select * from facility f\n" +
-            " join facility_type ft on f.facility_type_id = ft.facility_type_id\n" +
-            " join rent_type r on f.rent_type_id = r.rent_type_id\n" +
-            " where f.`name` like ? and r.rent_type_id = ? and ft.facility_type_id =?; ";
+    private static final String SEARCH_FACILITY_BY="select * from facility f  join facility_type ft on f.facility_type_id = ft.facility_type_id\n" +
+            "            join rent_type r on f.rent_type_id = r.rent_type_id\n" +
+            "            where f.`name` like ? and r.`name` like ? and ft.`name` like ?; ";
     private static final String INSERT_FACILITY="insert into facility(`name`,area,cost,max_people,rent_type_id,facility_type_id,standard_room,\n" +
             "description_other_convenience,pool_area,number_of_floors,facility_free)values\n" +
             "(?,?,?,?,?,?,?,?,?,?,?)";
@@ -144,14 +143,14 @@ public class FacilityRepository implements IFacilityRepository {
     }
 
     @Override
-    public List<Facility> searchByName(String name, int rentTypeId1, int facilityTypeId1) {
+    public List<Facility> searchByName(String name, String rentTypeName, String facilityTypeName) {
         List<Facility>facilityList = new ArrayList<>();
         Connection connection = BaseRepository.getConnectDB();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_FACILITY_BY);
             preparedStatement.setString(1,"%"+name+"%");
-            preparedStatement.setInt(2, rentTypeId1);
-            preparedStatement.setInt(3, facilityTypeId1);
+            preparedStatement.setString(2,"%"+ rentTypeName+"%");
+            preparedStatement.setString(3,"%"+ facilityTypeName+"%");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 int facilityId= resultSet.getInt("facility_id");

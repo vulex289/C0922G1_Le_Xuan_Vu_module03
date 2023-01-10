@@ -64,13 +64,13 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown ms-5">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle" href="/facility" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
                             Service
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="/facility">List Facility</a></li>
+                            <li><a class="dropdown-item" href="/facility?action=create">Create Facility</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -94,10 +94,10 @@
                 </ul>
                 <form class="d-flex mx-3" role="search" method="get">
                     <input class="form-control me-2" type="search" name="name" placeholder="Search" aria-label="Search">
-                    <label class="form-label">Loại khách hàng</label>
                     <select class="form-select" aria-label="Default select example" name="customerType">
+                        <option value="">Chọn loại khách hàng</option>
                         <c:forEach var="customerType" items="${customerTypeList}">
-                            <option value="${customerType.getCustomerTypeId()}">${customerType.getCustomerTypeName()}</option>
+                            <option value="${customerType.getCustomerTypeName()}">${customerType.getCustomerTypeName()}</option>
                         </c:forEach>
                     </select>
                     <button class="btn btn-outline-success" type="submit" name="action" value="search">Search</button>
@@ -204,6 +204,8 @@
             "pageLength": 5
         });
     });
+</script>
+<script>
 </script>
 </body>
 </html>

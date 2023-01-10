@@ -10,5 +10,5 @@ public interface IFacilityRepository {
     boolean deleteFacility(int id);
     boolean insertFacility(Facility facility);
     boolean updateFacility(Facility facility);
-    List<Facility>searchByName(String name, int rentTypeId1, int facilityTypeId1);
+    List<Facility>searchByName(String name, String rentTypeName, String facilityTypeName);
 }

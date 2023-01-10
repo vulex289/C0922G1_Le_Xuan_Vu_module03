@@ -3,6 +3,7 @@ package Service;
 import model.Facility;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IFacilityService {
     List<Facility> findAll();
@@ -10,5 +11,5 @@ public interface IFacilityService {
     boolean deleteFacility(int id);
     boolean insertFacility(Facility facility);
     boolean updateFacility(Facility facility);
-    List<Facility>searchByName(String name, int rentTypeId1, int facilityTypeId1);
+    List<Facility>searchByName(String name,String rentType, String facilityTypeName);
 }

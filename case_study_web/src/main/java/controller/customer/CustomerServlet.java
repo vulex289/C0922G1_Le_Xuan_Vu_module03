@@ -8,7 +8,9 @@ import model.Customer;
 import model.CustomerType;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -34,7 +36,7 @@ public class CustomerServlet extends HttpServlet {
                 showEditForm(request, response);
                 break;
             case "search":
-                searchByName(request,response);
+                searchByName(request, response);
                 break;
             default:
                 showList(request, response);
@@ -68,9 +70,9 @@ public class CustomerServlet extends HttpServlet {
     private void showList(HttpServletRequest request, HttpServletResponse response) {
         List<Customer> customerList = customerService.findAll();
         List<CustomerType> customerTypeList = customerTypeService.findAll();
-        for (Customer customer:customerList) {
-            String []arrDateOfBirth=customer.getDateOfBirth().split("-");
-            String date=arrDateOfBirth[2]+"-"+arrDateOfBirth[1]+"-"+arrDateOfBirth[0];
+        for (Customer customer : customerList) {
+            String[] arrDateOfBirth = customer.getDateOfBirth().split("-");
+            String date = arrDateOfBirth[2] + "-" + arrDateOfBirth[1] + "-" + arrDateOfBirth[0];
             customer.setDateOfBirth(date);
         }
         request.setAttribute("customerList", customerList);
@@ -88,6 +90,10 @@ public class CustomerServlet extends HttpServlet {
     private void showCreatForm(HttpServletRequest request, HttpServletResponse response) {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("view/customer/create.jsp");
         List<CustomerType> customerTypeList = customerTypeService.findAll();
+        LocalDate minAge = LocalDate.now().minusYears(70);
+        LocalDate maxAge = LocalDate.now().minusYears(18);
+        request.setAttribute("minAge", minAge);
+        request.setAttribute("maxAge", maxAge);
         request.setAttribute("customerTypeList", customerTypeList);
         try {
             requestDispatcher.forward(request, response);
@@ -99,7 +105,7 @@ public class CustomerServlet extends HttpServlet {
     }
 
     private void createCustomer(HttpServletRequest request, HttpServletResponse response) {
-        String message = "Thêm Mới thành công";
+        String message;
         String customerName = request.getParameter("customerName");
         String dayOfBirth = request.getParameter("dayOfBirth");
         int gender = Integer.parseInt(request.getParameter("gender"));
@@ -109,11 +115,16 @@ public class CustomerServlet extends HttpServlet {
         String address = request.getParameter("address");
         int customerTypeId = Integer.parseInt(request.getParameter("customerTypeId"));
         Customer customer = new Customer(customerName, dayOfBirth, gender, idCard, phoneNumber, email, address, customerTypeId);
-        boolean check = customerService.createCustomer(customer);
-        if (!check) {
+        Map<String, String> nameMap = customerService.createCustomer(customer);
+        if (nameMap.isEmpty()) {
+            message = " thành công";
+        } else {
             message = "Không thành công";
         }
         request.setAttribute("message", message);
+        request.setAttribute("nameMap", nameMap);
+        List<CustomerType> customerTypeList = customerTypeService.findAll();
+        request.setAttribute("customerTypeList", customerTypeList);
         RequestDispatcher requestDispatcher;
         requestDispatcher = request.getRequestDispatcher("view/customer/create.jsp");
         try {
@@ -178,18 +189,18 @@ public class CustomerServlet extends HttpServlet {
 
     private void searchByName(HttpServletRequest request, HttpServletResponse response) {
         String name = request.getParameter("name");
-        int customerType = Integer.parseInt(request.getParameter("customerType"));
-    List<Customer> customerList = customerService.searchByName(name,customerType);
-    List<CustomerType> customerTypeList = customerTypeService.findAll();
-    RequestDispatcher requestDispatcher = request.getRequestDispatcher("view/customer/customer.jsp");
-    request.setAttribute("customerList",customerList);
-    request.setAttribute("customerTypeList",customerTypeList);
+        String customerType = request.getParameter("customerType");
+        List<Customer> customerList = customerService.searchByName(name, customerType);
+        List<CustomerType> customerTypeList = customerTypeService.findAll();
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("view/customer/customer.jsp");
+        request.setAttribute("customerList", customerList);
+        request.setAttribute("customerTypeList", customerTypeList);
         try {
-            requestDispatcher.forward(request,response);
+            requestDispatcher.forward(request, response);
         } catch (ServletException e) {
             e.printStackTrace();
         } catch (IOException e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
     }
 

@@ -15,6 +15,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @WebServlet(name = "Servlet", value = "/facility")
@@ -117,6 +118,8 @@ public class FacilityServlet extends HttpServlet {
         }
         String facilityFree = request.getParameter("facilityFree");
         Facility facility = new Facility(facilityName, area, cost, maxPeople, rentTypeId, facilityTypeId, standardRoom, descriptionOtherConvenience, poolArea, numberOfFloors, facilityFree);
+//        Map<String,String> mapFacility = facilityService.insertFacility(facility);
+//        request.setAttribute("mapFacility",mapFacility);
         facilityService.insertFacility(facility);
       showList(request,response);
     }
@@ -127,9 +130,15 @@ public class FacilityServlet extends HttpServlet {
     }
     private void searchByName(HttpServletRequest request, HttpServletResponse response) {
     String name= request.getParameter("name");
-    int rentTypeId1= Integer.parseInt(request.getParameter("rentTypeId1"));
-    int facilityTypeId1= Integer.parseInt(request.getParameter("facilityTypeId1"));
-    List<Facility> facilityList=facilityService.searchByName(name,rentTypeId1,facilityTypeId1);
+    String rentTypeStr= request.getParameter("rentType");
+//        if (Objects.equals(rentTypeStr, "Chọn kiểu thuê")){
+//            rentTypeStr = "";
+//        }
+    String facilityTypeStr= request.getParameter("facilityType");
+//    if (Objects.equals(facilityTypeStr, "Chọn loại dịch vụ")){
+//        facilityTypeStr = "";
+//    }
+    List<Facility> facilityList=facilityService.searchByName(name,rentTypeStr,facilityTypeStr);
     List<FacilityType> facilityTypeList =facilityTypeService.findAll();
     List<RentType>rentTypeList=rentTypeService.findAll();
     request.setAttribute("facilityTypeList",facilityTypeList);

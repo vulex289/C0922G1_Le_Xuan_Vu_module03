@@ -8,12 +8,14 @@ import model.Customer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CustomerService implements ICustomerService {
     ICustomerRepository customerRepository = new CustomerRepository();
+    private static final String nameValidate = "^[A-Z][a-z]+( [A-Z][a-z]+)*$";
     @Override
     public List<Customer> findAll() {
-        Map<String, String>maps= new HashMap<>();
         return customerRepository.findAll();
     }
 
@@ -23,10 +25,21 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public boolean createCustomer(Customer customer) {
-        return customerRepository.createCustomer(customer);
+    public Map<String,String> createCustomer(Customer customer) {
+        Map<String,String> mapCustomer = new HashMap<>();
+        if (!checkInput(customer.getCustomerName(), nameValidate)){
+    mapCustomer.put("name","Chưa đúng định dạng");
+        }
+        if(mapCustomer.isEmpty()){
+            customerRepository.createCustomer(customer);
+        }
+        return mapCustomer;
     }
-
+    boolean checkInput(String value,String regex){
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(value);
+        return matcher.matches();
+    }
     @Override
     public boolean editCustomer(Customer customer) {
         return customerRepository.editCustomer(customer);
@@ -38,7 +51,7 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public List<Customer> searchByName(String name,int customerType) {
+    public List<Customer> searchByName(String name,String customerType) {
         return customerRepository.searchByName(name,customerType);
     }
 
